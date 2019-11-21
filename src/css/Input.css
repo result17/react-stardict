@@ -1,0 +1,20 @@
+.input {
+  width: 250px;
+  height: 30px;
+  padding-left: 10px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: Montserrat, sans-serif;
+  transition: all .3s;
+  border-width: 1px;
+  border-color: rgb(20,20,20);
+  border-style: solid;
+  border-image: none;
+  outline: none;
+}
+.input:focus {
+  /* outline: 2px solid #f45a8d; */
+  outline: none;
+  border-color: #f45a8d;
+}
