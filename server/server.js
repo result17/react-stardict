@@ -15,7 +15,7 @@ const proxy = httpProxy.createProxyServer({
 const publicPath = path.join(__dirname, '..', 'public')
 // const bulidPath = paht.join(__dirname, '..', 'bulid')
 
-app.use('/', express.static(publicPath))
+// app.use('/', express.static(publicPath))
 // app.use('/', Express.static(bulidPath))
 
 app.use('/api', (req, res) => {
@@ -24,7 +24,7 @@ app.use('/api', (req, res) => {
   })
 })
 
-app.listen(port, (err) => {
+app.listen(url, (err) => {
   if (err) {
     console.error(err)
   } else {
