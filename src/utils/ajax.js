@@ -1,17 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
 
-// axios.defaults.baseURL = '127.0.0.1:3060'
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-
-// export const request = {
-//   get(url, params) {
-//     return axios.get(url, params)
-//   },
-//   post(url, params) {
-//     return axios.post(url, qs.stringify(params))
-//   }
-// }
 const instance = axios.create({
   baseURL: 'http://127.0.0.1:6060',
   timeout: 1000,

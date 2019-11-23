@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from './views/Header'
 import Main from './views/Main'
 import throttle from './utils/throttle'
+import req from './utils/ajax'
 import './css/App.css'
 
 export const { Provider, Consumer } = React.createContext()
@@ -13,7 +14,9 @@ if (!window.localStorage.getItem('theme')) {
 class App extends Component {
   state = {
     theme: window.localStorage.getItem('theme') === 'light',
-    searchWord: 'test',
+    searchWord: '',
+    searchWordData: {},
+    dataCache: {},
   }
 
   setToggleTheme = () => {
@@ -31,9 +34,37 @@ class App extends Component {
       throttler(event.target.value)
     }
   }
-  getData = (event) => {
-    // if (event.type !== '')
+  // 在utils中单独写一个过滤方法（在界面显示提示信息？）
+  filterValue = (val) => val
+
+  getWordData = async(event) => {
+    let value = this.filterValue(event.target.balue)
+    if (value === undefined) return
+
+    let dataCache = {...this.stata.dataCache}
+    // 如果值合法且没有被缓存
+    if (!dataCache.hasOwnProperty(value)) {
+      if (event.type === 'keypress' && event.key === 'Enter' || event.type === 'click') {
+        let response = await req.getData('/s', {wd: value})
+        // dataCache对象不得超过两百个键值对
+        if (Object.keys(dataCache).length > 199) {
+          dataCache = {}
+        }
+        dataCache[value] = response.data
+        this.setState({
+          ...this.stata,
+          searchWordData: response.data,
+          dataCache: dataCache,
+        })
+      }
+    } else {
+      this.setState({
+        ...this.stata,
+        searchWordData: dataCache
+      })
+    }
   }
+
   render() {
     return (
       <Provider
