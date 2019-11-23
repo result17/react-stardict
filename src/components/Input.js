@@ -1,15 +1,9 @@
 import React, {Component} from 'react'
 import throttle from '../utils/throttle'
+import { Consumer } from '../App'
 import '../css/Input.css'
 
 class Input extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: '',
-    }
-  }
   
   handleChange = (event) => {
     event.persist()
@@ -17,22 +11,27 @@ class Input extends Component {
   }
 
   handleThrottle = throttle((event) => {
-    this.setState({
-      value: event.target.value,
-    })
+    // this.setState({
+    //   value: event.target.value,
+    // })
+    // use axios send a http request
   }, 100)
 
   render() {
     return (
-      <input 
-      tyep="text"
-      className="input"
-      value={this.state.value} 
-      onChange={this.handleChange} 
-      autoFocus={true}
-      placeholder="enter your word"
-      maxLength="20"
-      />
+      <Consumer>
+        {({searchWord, setSearchWord}) => {
+          <input 
+            tyep="text"
+            className="input"
+            value={searchWord} 
+            onChange={this.handleChange} 
+            autoFocus={true}
+            placeholder="enter your word"
+            maxLength="20"
+          />
+        }}
+      </Consumer>
     ) 
   }
 }

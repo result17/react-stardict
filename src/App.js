@@ -3,7 +3,7 @@ import Header from './views/Header'
 import Main from './views/Main'
 import './css/App.css'
 
-export const ThemeContext = React.createContext()
+export const { Provider, Consumer } = React.createContext()
 
 if (!window.localStorage.getItem('theme')) {
   window.localStorage.setItem('theme', 'light')
@@ -11,23 +11,29 @@ if (!window.localStorage.getItem('theme')) {
 
 class App extends Component {
   state = {
-    theme: window.localStorage.getItem('theme') === 'light'
+    theme: window.localStorage.getItem('theme') === 'light',
+    searchWord: '',
   }
 
-  handleToggleTheme = () => {
-    this.setState((state) => ({theme: !state.theme}))
+  setToggleTheme = () => {
+    this.setState((state) => ({...state, theme: !state.theme}))
+  }
+  setSearchWord = (value) => {
+    this.setState((state) => ({...state, searchWord: value}))
   }
   render() {
     return (
-      <ThemeContext.Provider
+      <Provider
         value={{
           theme: this.state.theme,
-          handleToggleTheme: this.handleToggleTheme,
+          searchWord: this.state.searchWord,
+          setSearchWord: this.setSearchWord,
+          setToggleTheme: this.setToggleTheme,
         }}
       >
         <Header></Header>
         <Main></Main>
-      </ThemeContext.Provider>
+      </Provider>
     )
   }
 }

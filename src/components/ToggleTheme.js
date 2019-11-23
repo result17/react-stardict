@@ -1,16 +1,16 @@
 import React from 'react'
-import { ThemeContext } from '../App'
+import { Consumer } from '../App'
 import imgsData from '../data/base64Imgs'
 import '../css/ToggleTheme.css'
 
 export default function ToggleTheme() {
   const myToggler = React.createRef()
   return (
-    <ThemeContext.Consumer>
-      {({theme, handleToggleTheme}) => (
+    <Consumer>
+      {({theme, setToggleTheme}) => (
         <section 
           className={theme ? 'toggler' : 'toggler actived'} 
-          onClick={handleToggleTheme}
+          onClick={setToggleTheme}
           ref={myToggler}
         >
           <div className="toggler-background">
@@ -23,6 +23,6 @@ export default function ToggleTheme() {
           </div>
           <div className="toggler-thumb"></div>
         </section>)}
-    </ThemeContext.Consumer>
+    </Consumer>
   )
 }
