@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Consumer } from '../App'
 import '../css/Accordion.css'
 
 class Accordion extends Component {
@@ -24,35 +25,37 @@ class Accordion extends Component {
       [key]: !this.state[key]
     })
   }
-  handleItemClick = (event) => {}
   render() {
     return (
-      this.props.detailsData.map((detail, idx) => {
-        // debugger
+      this.props.detailsData.map((detail, index) => {
         return (
-          <details
-            key={detail.summaryContent}
-            className="detail-menu" 
-            open={this.state[`${detail.summaryContent}Open`]}
-            onClick={this.handleOpen}
-          >
-            <summary className="detail-menu-summary">{detail.summaryContent}</summary>
-            <ul className="detail-menu-list">
-              {detail.items &&
-                detail.items.map((item) => {
-                  return (
-                    <li 
-                      key={item} 
-                      className="detail-menu-item"
-                      onClick={this.handleItemClick}
-                    >
-                    {item}
-                    </li>
-                  )
-                })
-              }
-            </ul>
-          </details>
+          <Consumer>
+            {({setSearchWord}) => (
+              <details
+                key={index}
+                className="detail-menu" 
+                open={this.state[`${detail.summaryContent}Open`]}
+                onClick={this.handleOpen}
+              >
+                <summary className="detail-menu-summary">{detail.summaryContent}</summary>
+                <ul className="detail-menu-list">
+                  {detail.items &&
+                    detail.items.map((item) => {
+                      return (
+                        <li 
+                          key={item}
+                          className="detail-menu-item"
+                          onClick={setSearchWord}
+                        >
+                        {item}
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </details>
+            )}
+          </Consumer>
         )
       })
     )

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Header from './views/Header'
 import Main from './views/Main'
+import throttle from './utils/throttle'
 import './css/App.css'
 
 export const { Provider, Consumer } = React.createContext()
@@ -12,19 +13,32 @@ if (!window.localStorage.getItem('theme')) {
 class App extends Component {
   state = {
     theme: window.localStorage.getItem('theme') === 'light',
-    searchWord: '',
+    searchWord: 'test',
   }
 
   setToggleTheme = () => {
     this.setState((state) => ({...state, theme: !state.theme}))
   }
-  setSearchWord = (value) => {
-    this.setState((state) => ({...state, searchWord: value}))
+  setSearchWord = (event) => {
+    event.persist()
+    let setSearchWordState = (value) => {
+      this.setState({...this.state, searchWord: value})
+    }
+    let throttler = throttle(setSearchWordState, 100)
+    if (event.type === 'click') {
+      throttler(event.target.innerText)
+    } else {
+      throttler(event.target.value)
+    }
   }
   render() {
     return (
       <Provider
-        value={this.state}
+        value={{
+          ...this.state,
+          setToggleTheme :this.setToggleTheme,
+          setSearchWord: this.setSearchWord,
+        }}
       >
         <Header></Header>
         <Main></Main>
