@@ -31,6 +31,9 @@ class App extends Component {
       throttler(event.target.value)
     }
   }
+  getData = (event) => {
+    // if (event.type !== '')
+  }
   render() {
     return (
       <Provider
