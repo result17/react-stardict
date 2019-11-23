@@ -24,12 +24,7 @@ class App extends Component {
   render() {
     return (
       <Provider
-        value={{
-          theme: this.state.theme,
-          searchWord: this.state.searchWord,
-          setSearchWord: this.setSearchWord,
-          setToggleTheme: this.setToggleTheme,
-        }}
+        value={this.state}
       >
         <Header></Header>
         <Main></Main>
