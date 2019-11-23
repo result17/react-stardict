@@ -26,7 +26,11 @@ app.get('/s', async(req, res, next) => {
     next()
     return
   }
+  res.set({
+    'Access-Control-Allow-Origin': '127.0.0.1:3000'
+  })
   res.json(searchRes)
+  res.end()
 })
 async function main() {
   db = await dbPromise
