@@ -3,6 +3,7 @@ import Header from './views/Header'
 import Main from './views/Main'
 import throttle from './utils/throttle'
 import req from './utils/ajax'
+import cloneDeep from './utils/cloneDeep'
 import './css/App.css'
 import getLocalStorage from './data/getLocalStorage'
 
@@ -17,10 +18,12 @@ class App extends Component {
     details: [{
         context: 'Collections',
         data: getLocalStorage('collection', 'apple,dog,canndy').split(',').reverse(),
+        open: false,
       },
       {
         context: 'History',
-        data: getLocalStorage('history', 'computer,game,gggggggggggggggggggggggggggggg').split(',').reverse(),
+        data: getLocalStorage('history', 'computer,game,gggggggggggggggggggggggggggggggggggggggg').split(',').reverse(),
+        open: false,
       }
     ]
   }
@@ -42,19 +45,22 @@ class App extends Component {
   filterValue = (val) => val
   
   getWordData = async(event) => {
-    // 只有在页面的Input的keypress事件和Accordion的click事件触发此函数
-    if (event.type === 'keypress' && event.key === 'Enter' || event.type === 'click') return
+    console.log(event.type)
+  // 只有在页面的Input的keypress事件和Accordion的click事件触发此函数
+    // if (event.type !== 'click' || event.type !== 'keypress' && event.key !== 'Enter') return 
     // 过滤无效值
-    let value = this.filterValue(event.target.balue)
+    let value = this.filterValue(this.state.searchWord)
     if (value === undefined) return
-    
+
     let dataCache = this.state.dataCache
     // 没有被缓存则进行请求
     if (!dataCache.hasOwnProperty(value)) {
       if (Object.keys(dataCache).length > 199) {
         dataCache = {}
       }
+      debu
       let response = await req.getData('/s', {wd: value})
+      console.log(response)
       dataCache[value] = response.data
     }
     // Accordion点击事件还会改变searchWord的值
@@ -72,6 +78,19 @@ class App extends Component {
     }
     return
   }
+  
+  setAccordionOpen = (event) => {
+    // https://github.com/facebook/react/issues/15486
+    event.preventDefault()
+    let val = event.target.innerText
+    let details = cloneDeep(this.state.details)
+    let target = details.find((detail) => detail.context === val)
+    target.open = !target.open
+    this.setState({
+      ...this.state,
+      details: details,
+    })
+  }
 
   render() {
     return (
@@ -80,6 +99,8 @@ class App extends Component {
           ...this.state,
           setToggleTheme :this.setToggleTheme,
           setInputSearchWord: this.setInputSearchWord,
+          setAccordionOpen: this.setAccordionOpen,
+          getWordData: this.getWordData,
         }}
       >
         <Header></Header>
