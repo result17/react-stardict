@@ -10,10 +10,6 @@ const details = [{
   items: ['apple', 'dog', 'candy', 'girl', 'game', 'computer', 'javascript', 'journey', 'music', 'coffice', 'tea', 'city', 'life', 'lunch', 'milk', 'coke', 'light', 'dark'],
 }]
 export default class Aside extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
   render() {
     return (
       <aside className="aside">

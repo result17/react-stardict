@@ -1,5 +1,5 @@
 export default function mySetInterval(cb, interval) {
-  setTimeout(() => {
+  return setTimeout(() => {
     cb()
     mySetInterval(cb, interval)
   }, interval)

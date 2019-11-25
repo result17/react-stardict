@@ -4,21 +4,21 @@ import Main from './views/Main'
 import throttle from './utils/throttle'
 import req from './utils/ajax'
 import './css/App.css'
+import getLocalStorage from './data/localStorage'
 
 export const { Provider, Consumer } = React.createContext()
 
-if (!window.localStorage.getItem('theme')) {
-  window.localStorage.setItem('theme', 'light')
-}
-
 class App extends Component {
   state = {
-    theme: window.localStorage.getItem('theme') === 'light',
+    theme: this.theme === 'light',
     searchWord: '',
     searchWordData: {},
     dataCache: {},
   }
-
+  theme = undefined
+  componentDidMount() {
+    this.theme = getLocalStorage('theme', 'light')
+  }
   setToggleTheme = () => {
     this.setState((state) => ({...state, theme: !state.theme}))
   }
@@ -41,7 +41,7 @@ class App extends Component {
     let value = this.filterValue(event.target.balue)
     if (value === undefined) return
 
-    let dataCache = {...this.stata.dataCache}
+    let dataCache = this.state.dataCache
     // 如果值合法且没有被缓存
     if (!dataCache.hasOwnProperty(value)) {
       if (event.type === 'keypress' && event.key === 'Enter' || event.type === 'click') {
@@ -54,13 +54,12 @@ class App extends Component {
         this.setState({
           ...this.stata,
           searchWordData: response.data,
-          dataCache: dataCache,
         })
       }
     } else {
       this.setState({
         ...this.stata,
-        searchWordData: dataCache
+        searchWordData: response.data
       })
     }
   }

@@ -14,8 +14,9 @@ class Header extends Component {
       studyTime: 0,
     }
   }
+  timerID = undefined
   componentDidMount () {
-    this.increaseStudyTime()
+    this.timerID = this.increaseStudyTime()
   }
   increaseStudyTime = () => {
     let studyTime = 1
@@ -25,7 +26,10 @@ class Header extends Component {
       studyTime: studyTime++,
      })
     }
-    mySetInterval(updataState, 60000)
+    return mySetInterval(updataState, 60000)
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID)
   }
   render() {
     return (
