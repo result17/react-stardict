@@ -1,4 +1,4 @@
-export function  getLocalStorage(item, defalutValue = '') {
+export default function  getLocalStorage(item, defalutValue = '') {
   if (!window.localStorage.getItem(item)) {
     window.localStorage.setItem(item, defalutValue)
   }

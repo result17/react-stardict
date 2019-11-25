@@ -5,16 +5,16 @@ class Input extends Component {
   render() {
     return (
       <Consumer>
-        {({searchWord, setSearchWord}) => (
+        {({searchWord, setInputSearchWord, getWordData}) => (
           <input 
             tyep="text"
             className="input"
             value={searchWord} 
-            onChange={setSearchWord} 
+            onChange={setInputSearchWord} 
             autoFocus={true}
             placeholder="enter your word"
             maxLength="20"
-            onKeyPress={this.handleKeyPress}
+            onKeyPress={getWordData}
           />
         )}
       </Consumer>

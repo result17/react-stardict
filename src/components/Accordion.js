@@ -11,10 +11,6 @@ class Accordion extends Component {
     this.state = state
   }
   handleOpen = (event) => {
-    // let key = `${event.target.innerText}Open`
-    // let newState = Object.assign(this.state)
-    // newState[key] = !this.state[key]
-    // this.setState(newState)
 
     // https://github.com/facebook/react/issues/15486
     event.preventDefault()
@@ -27,37 +23,35 @@ class Accordion extends Component {
   }
   render() {
     return (
-      this.props.detailsData.map((detail, index) => {
-        return (
-          <Consumer>
-            {({setSearchWord}) => (
-              <details
-                key={index}
-                className="detail-menu" 
-                open={this.state[`${detail.summaryContent}Open`]}
-                onClick={this.handleOpen}
-              >
-                <summary className="detail-menu-summary">{detail.summaryContent}</summary>
-                <ul className="detail-menu-list">
-                  {detail.items &&
-                    detail.items.map((item) => {
-                      return (
-                        <li 
-                          key={item}
-                          className="detail-menu-item"
-                          onClick={setSearchWord}
-                        >
-                        {item}
-                        </li>
-                      )
-                    })
-                  }
-                </ul>
-              </details>
-            )}
-          </Consumer>
-        )
-      })
+      <Consumer>
+        {({details, getWordData}) => (
+          details.map((detail) => {
+            return <details
+              key={detail.context}
+              className="detail-menu" 
+              open={this.state[`${detail.context}Open`]}
+              onClick={this.handleOpen}
+            >
+            <summary className="detail-menu-summary">{detail.context}</summary>
+            <ul className="detail-menu-list">
+              {detail.data &&
+                detail.data.map((item) => {
+                  return (
+                    <li 
+                      key={item}
+                      className="detail-menu-item"
+                      onClick={getWordData}
+                    >
+                    {item}
+                    </li>
+                  )
+                })
+              }
+            </ul>
+          </details>
+          })
+        )}
+      </Consumer>
     )
   }
 }

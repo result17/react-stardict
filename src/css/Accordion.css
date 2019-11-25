@@ -13,6 +13,7 @@
   transition: .1s;
   cursor: pointer;
   user-select: none;
+  text-overflow: ellipsis;
 }
 .detail-menu-item:hover {
   background: #edf9ff;

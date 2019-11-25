@@ -4,64 +4,73 @@ import Main from './views/Main'
 import throttle from './utils/throttle'
 import req from './utils/ajax'
 import './css/App.css'
-import getLocalStorage from './data/localStorage'
+import getLocalStorage from './data/getLocalStorage'
 
 export const { Provider, Consumer } = React.createContext()
 
 class App extends Component {
   state = {
-    theme: this.theme === 'light',
+    theme: getLocalStorage('theme', 'light') === 'light',
     searchWord: '',
     searchWordData: {},
     dataCache: {},
+    details: [{
+        context: 'Collections',
+        data: getLocalStorage('collection', 'apple,dog,canndy').split(',').reverse(),
+      },
+      {
+        context: 'History',
+        data: getLocalStorage('history', 'computer,game,gggggggggggggggggggggggggggggg').split(',').reverse(),
+      }
+    ]
   }
-  theme = undefined
-  componentDidMount() {
-    this.theme = getLocalStorage('theme', 'light')
-  }
+
   setToggleTheme = () => {
     this.setState((state) => ({...state, theme: !state.theme}))
   }
-  setSearchWord = (event) => {
+
+  setInputSearchWord = (event) => {
     event.persist()
     let setSearchWordState = (value) => {
       this.setState({...this.state, searchWord: value})
     }
     let throttler = throttle(setSearchWordState, 100)
-    if (event.type === 'click') {
-      throttler(event.target.innerText)
-    } else {
-      throttler(event.target.value)
-    }
+    throttler(event.target.vale)
   }
+
   // 在utils中单独写一个过滤方法（在界面显示提示信息？）
   filterValue = (val) => val
-
+  
   getWordData = async(event) => {
+    // 只有在页面的Input的keypress事件和Accordion的click事件触发此函数
+    if (event.type === 'keypress' && event.key === 'Enter' || event.type === 'click') return
+    // 过滤无效值
     let value = this.filterValue(event.target.balue)
     if (value === undefined) return
-
+    
     let dataCache = this.state.dataCache
-    // 如果值合法且没有被缓存
+    // 没有被缓存则进行请求
     if (!dataCache.hasOwnProperty(value)) {
-      if (event.type === 'keypress' && event.key === 'Enter' || event.type === 'click') {
-        let response = await req.getData('/s', {wd: value})
-        // dataCache对象不得超过两百个键值对
-        if (Object.keys(dataCache).length > 199) {
-          dataCache = {}
-        }
-        dataCache[value] = response.data
-        this.setState({
-          ...this.stata,
-          searchWordData: response.data,
-        })
+      if (Object.keys(dataCache).length > 199) {
+        dataCache = {}
       }
+      let response = await req.getData('/s', {wd: value})
+      dataCache[value] = response.data
+    }
+    // Accordion点击事件还会改变searchWord的值
+    if (event.type === 'click') {
+      this.setState({
+        ...this.state,
+        searchWord: value,
+        searchWordData: dataCache[value], 
+      })
     } else {
       this.setState({
-        ...this.stata,
-        searchWordData: response.data
+        ...this.state,
+        searchWordData: dataCache[value]
       })
     }
+    return
   }
 
   render() {
@@ -70,7 +79,7 @@ class App extends Component {
         value={{
           ...this.state,
           setToggleTheme :this.setToggleTheme,
-          setSearchWord: this.setSearchWord,
+          setInputSearchWord: this.setInputSearchWord,
         }}
       >
         <Header></Header>
