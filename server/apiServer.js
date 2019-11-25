@@ -9,9 +9,10 @@ const apiUrl = `http://${apiHost}:${apiPort}`
 let db
 const app = new express()
 app.get('/s', async(req, res, next) => {
+  // 判断请求url来设置Access-Control-Allow-Origin
   if (!req.query.wd) {
     res.json({
-      code: 0,
+      code: 2,
       reason: '输入参数无效',
     })
     next()
@@ -19,6 +20,9 @@ app.get('/s', async(req, res, next) => {
   }
   let searchRes = await db.get('SELECT * FROM stardict WHERE word = ?', req.query.wd)
   if (!searchRes) {
+    res.set({
+      'Access-Control-Allow-Origin': 'http://localhost:3000'
+    })
     res.json({
       code: 1,
       reason: '抱歉，此词条不存在',
@@ -27,9 +31,13 @@ app.get('/s', async(req, res, next) => {
     return
   }
   res.set({
-    'Access-Control-Allow-Origin': '127.0.0.1:3000'
+    'Access-Control-Allow-Origin': 'http://localhost:3000'
   })
-  res.json(searchRes)
+  res.json({
+    code: 0,
+    ...searchRes,
+  })
+  next()
   res.end()
 })
 async function main() {

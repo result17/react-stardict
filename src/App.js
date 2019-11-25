@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Header from './views/Header'
 import Main from './views/Main'
 import throttle from './utils/throttle'
-import req from './utils/ajax'
+import {getWordData, setWordCache} from './data/cache'
 import cloneDeep from './utils/cloneDeep'
 import './css/App.css'
 import getLocalStorage from './data/getLocalStorage'
@@ -14,7 +14,6 @@ class App extends Component {
     theme: getLocalStorage('theme', 'light') === 'light',
     searchWord: '',
     searchWordData: {},
-    dataCache: {},
     details: [{
         context: 'Collections',
         data: getLocalStorage('collection', 'apple,dog,canndy').split(',').reverse(),
@@ -31,53 +30,61 @@ class App extends Component {
   setToggleTheme = () => {
     this.setState((state) => ({...state, theme: !state.theme}))
   }
-
+  
+  // input的change的事件
   setInputSearchWord = (event) => {
     event.persist()
     let setSearchWordState = (value) => {
       this.setState({...this.state, searchWord: value})
     }
+    console.log(event.target.value)
     let throttler = throttle(setSearchWordState, 100)
-    throttler(event.target.vale)
+    throttler(event.target.value)
   }
-
-  // 在utils中单独写一个过滤方法（在界面显示提示信息？）
-  filterValue = (val) => val
+  // Accordion的click事件
+  setAccordionSearchWord = (event) => {
+    this.setState({...this.stata, searchWord: event.target.innerText})
+  }
   
-  getWordData = async(event) => {
-    console.log(event.type)
-  // 只有在页面的Input的keypress事件和Accordion的click事件触发此函数
-    // if (event.type !== 'click' || event.type !== 'keypress' && event.key !== 'Enter') return 
-    // 过滤无效值
+  setInputSearchWordData = async(event) => {
+    // 验证是否为敲回车事件
+    if (event.key !== 'Enter') return
+    // 过滤无效值(纯函数)
     let value = this.filterValue(this.state.searchWord)
     if (value === undefined) return
-
-    let dataCache = this.state.dataCache
-    // 没有被缓存则进行请求
-    if (!dataCache.hasOwnProperty(value)) {
-      if (Object.keys(dataCache).length > 199) {
-        dataCache = {}
-      }
-      debu
-      let response = await req.getData('/s', {wd: value})
-      console.log(response)
-      dataCache[value] = response.data
-    }
-    // Accordion点击事件还会改变searchWord的值
-    if (event.type === 'click') {
-      this.setState({
+    // axios超时限制为1000ms
+    console.log(this.filterValue(this.state.searchWord))
+    let resData = await getWordData(value)
+    try {
+      setWordCache(this.state.searchWord, resData.data)
+      this.state({
         ...this.state,
-        searchWord: value,
-        searchWordData: dataCache[value], 
+        searchWordData: resData.data
       })
-    } else {
-      this.setState({
-        ...this.state,
-        searchWordData: dataCache[value]
-      })
+    } catch {
+      console.error('backend has error')
     }
-    return
   }
+ 
+  setAccordionSearchWordData = async(event) => {
+    event.persist()
+    this.setAccordionSearchWord(event)
+    // console.log(this.state.searchWord)
+    let value = this.filterValue(event.target.innerText)
+    if (value === undefined) return
+    let resData = await getWordData(value)
+    try {
+      setWordCache(event.target.innerText, resData.data)
+      this.setState({
+        ...this.state,
+        searchWordData: resData.data
+      })
+    } catch {
+      console.error('backend has error')
+    }
+  }
+  // 在utils中单独写一个过滤方法（在界面显示提示信息？）
+  filterValue = (val) => val
   
   setAccordionOpen = (event) => {
     // https://github.com/facebook/react/issues/15486
@@ -99,8 +106,10 @@ class App extends Component {
           ...this.state,
           setToggleTheme :this.setToggleTheme,
           setInputSearchWord: this.setInputSearchWord,
+          setInputSearchWordData: this.setInputSearchWordData,
+          setAccordionSearchWord: this.setAccordionSearchWord,
+          setAccordionSearchWordData: this.setAccordionSearchWordData,
           setAccordionOpen: this.setAccordionOpen,
-          getWordData: this.getWordData,
         }}
       >
         <Header></Header>

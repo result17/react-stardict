@@ -6,7 +6,7 @@ class Accordion extends Component {
   render() {
     return (
       <Consumer>
-        {({details, getWordData, setAccordionOpen}) => (
+        {({details, setAccordionSearchWordData, setAccordionOpen}) => (
           details.map((detail) => {
             return <details
               key={detail.context}
@@ -21,7 +21,7 @@ class Accordion extends Component {
                     <li 
                       key={item}
                       className="detail-menu-item"
-                      onClick={getWordData}
+                      onClick={setAccordionSearchWordData}
                     >
                     {item}
                     </li>
