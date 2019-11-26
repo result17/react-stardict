@@ -1,6 +1,7 @@
 import React from 'react'
 import '../css/Main.css'
 import Aside from './Aside'
+import MainContent from './MainContext'
 
 export default function Main() {
   return (
@@ -9,10 +10,7 @@ export default function Main() {
         <Aside></Aside>
       </div>
       <div className="maincontent-wrapper">
-        {/* <MainContent></MainContent> */}
-      </div>
-      <div className="footercontent-wrapper">
-        {/* <FooterContent></FooterContent> */}
+        <MainContent></MainContent>
       </div>
     </div>
   )

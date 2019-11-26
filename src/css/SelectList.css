@@ -11,6 +11,7 @@
   text-align: center;
   transition: all .8s;
   overflow: hidden;
+  z-index: 99;
 }
 .select-list:hover {
   color: #f30;

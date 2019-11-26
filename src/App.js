@@ -37,7 +37,6 @@ class App extends Component {
     let setSearchWordState = (value) => {
       this.setState({...this.state, searchWord: value})
     }
-    console.log(event.target.value)
     let throttler = throttle(setSearchWordState, 100)
     throttler(event.target.value)
   }
@@ -53,31 +52,45 @@ class App extends Component {
     let value = this.filterValue(this.state.searchWord)
     if (value === undefined) return
     // axios超时限制为1000ms
-    console.log(this.filterValue(this.state.searchWord))
-    let resData = await getWordData(value)
     try {
+      let resData = await getWordData(value)
+      let newDetails = this.setDetailsAry('History', resData.data.word)
       setWordCache(this.state.searchWord, resData.data)
-      this.state({
+      this.setState({
         ...this.state,
-        searchWordData: resData.data
+        searchWordData: resData.data,
+        details: newDetails,
       })
     } catch {
       console.error('backend has error')
     }
   }
  
+  setDetailsAry = (tar, value) => {
+    let details = cloneDeep(this.state.details)
+    let target = details.find((detail) => detail.context === tar)
+    if (target.data.includes(value)) {
+      // 纯函数提升位置
+    } else {
+      
+    }
+    return details
+  }
+
   setAccordionSearchWordData = async(event) => {
     event.persist()
     this.setAccordionSearchWord(event)
     // console.log(this.state.searchWord)
     let value = this.filterValue(event.target.innerText)
     if (value === undefined) return
-    let resData = await getWordData(value)
     try {
+      let resData = await getWordData(value)
+      let newDetails = this.setDetailsAry('History', resData.data.word)
       setWordCache(event.target.innerText, resData.data)
       this.setState({
         ...this.state,
-        searchWordData: resData.data
+        searchWordData: resData.data,
+        details: newDetails
       })
     } catch {
       console.error('backend has error')

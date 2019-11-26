@@ -4,38 +4,39 @@
 ::-moz-list-bullet {
   font-size: 0;
 }
-
+.detail-menu-list, .detail-menu-item {
+  margin: 0;
+  padding: 0;
+}
 .detail-menu-item {
+  padding-left: 45px;
   line-height: 40px;
-  padding: 0 25px;
   font-size: 14px;
-  color: #666;
   transition: .1s;
   cursor: pointer;
   user-select: none;
+  list-style: none;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 .detail-menu-item:hover {
   background: #edf9ff;
   color: #ffa7c4;
 }
-.detail-menu-list, .detail-menu-item {
-  margin: 0;
-  padding: 0;
-}
 .detail-menu-list {
-  margin-left: 30px;
   height: 270px;
   overflow-x: hidden;
   overflow-y: auto;
 }
-.detail-menu-item {
-  padding-left: 15px;
-  list-style: none;
-  overflow: hidden;
-}
 .detail-menu-list li:last-child {
-  border-bottom: 1px solid #333;
+  position: relative;
+}
+/* 注意这里是要出现在li内容之前绝不能用after，否则内容过多会显示失败 */
+.detail-menu-list li:last-child::before {
+  content: 'END';
+  position: absolute;
+  left: 10px;
+  color: red;
 }
 .detail-menu-summary {
   position: relative;
