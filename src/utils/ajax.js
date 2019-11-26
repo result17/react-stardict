@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:6060',
+  baseURL: 'http://10.172.99.237:6060',
   timeout: 1000,
   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 })

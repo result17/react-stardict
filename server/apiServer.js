@@ -15,13 +15,16 @@ app.get('/s', async(req, res, next) => {
       code: 2,
       reason: '输入参数无效',
     })
+    res.set({
+      'Access-Control-Allow-Origin': '*'
+    })
     next()
     return
   }
   let searchRes = await db.get('SELECT * FROM stardict WHERE word = ?', req.query.wd)
   if (!searchRes) {
     res.set({
-      'Access-Control-Allow-Origin': 'http://localhost:3000'
+      'Access-Control-Allow-Origin': '*'
     })
     res.json({
       code: 1,
@@ -31,7 +34,7 @@ app.get('/s', async(req, res, next) => {
     return
   }
   res.set({
-    'Access-Control-Allow-Origin': 'http://localhost:3000'
+    'Access-Control-Allow-Origin': '*'
   })
   res.json({
     code: 0,

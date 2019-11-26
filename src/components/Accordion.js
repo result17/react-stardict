@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Consumer } from '../App'
+import myReverse from '../utils/myReverse'
 import '../css/Accordion.css'
 
 class Accordion extends Component {
@@ -16,7 +17,7 @@ class Accordion extends Component {
             <summary className="detail-menu-summary"onClick={setAccordionOpen}>{detail.context}</summary>
             <ul className="detail-menu-list">
               {detail.data &&
-                detail.data.map((item) => {
+                myReverse(detail.data).map((item) => {
                   return (
                     <li 
                       key={item}

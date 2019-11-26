@@ -8,7 +8,6 @@ class SelectList extends Component {
       isOpen: false,
     }
   }
-  
   render() {
     return (
       <section className="select-list animated bounceInRight">

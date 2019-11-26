@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import Header from './views/Header'
 import Main from './views/Main'
 import throttle from './utils/throttle'
-import {getWordData, setWordCache} from './data/cache'
 import cloneDeep from './utils/cloneDeep'
+import updataAry from './utils/updataAry'
+import {getWordData, setWordCache} from './data/cache'
+import {getLocalStorage, setLocalStorage} from './data/localStorage'
 import './css/App.css'
-import getLocalStorage from './data/getLocalStorage'
 
 export const { Provider, Consumer } = React.createContext()
 
@@ -16,12 +17,12 @@ class App extends Component {
     searchWordData: {},
     details: [{
         context: 'Collections',
-        data: getLocalStorage('collection', 'apple,dog,canndy').split(',').reverse(),
+        data: getLocalStorage('collection', 'apple,dog,physics').split(','),
         open: false,
       },
       {
         context: 'History',
-        data: getLocalStorage('history', 'computer,game,gggggggggggggggggggggggggggggggggggggggg').split(',').reverse(),
+        data: getLocalStorage('history', 'computer,game,chemistry').split(','),
         open: false,
       }
     ]
@@ -69,18 +70,16 @@ class App extends Component {
   setDetailsAry = (tar, value) => {
     let details = cloneDeep(this.state.details)
     let target = details.find((detail) => detail.context === tar)
-    if (target.data.includes(value)) {
-      // 纯函数提升位置
-    } else {
-      
-    }
+    let newAry = updataAry(target.data, value)
+    target.data = newAry
+    // 投机取巧的使数组直接转为字符传
+    setLocalStorage(tar.toLowerCase(), newAry.toString())
     return details
   }
 
   setAccordionSearchWordData = async(event) => {
     event.persist()
     this.setAccordionSearchWord(event)
-    // console.log(this.state.searchWord)
     let value = this.filterValue(event.target.innerText)
     if (value === undefined) return
     try {
@@ -92,8 +91,8 @@ class App extends Component {
         searchWordData: resData.data,
         details: newDetails
       })
-    } catch {
-      console.error('backend has error')
+    } catch(err) {
+      console.error(err)
     }
   }
   // 在utils中单独写一个过滤方法（在界面显示提示信息？）

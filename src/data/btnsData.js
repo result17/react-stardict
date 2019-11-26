@@ -6,7 +6,7 @@ const btns = [{
   func: () => 2,
 }, {
   btnName: 'about me',
-  func: () => 3,
+  func: () => window.open('https://github.com/result17')
 }]
 
 export default btns
