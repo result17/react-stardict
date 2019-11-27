@@ -63,7 +63,7 @@ class Header extends Component {
                 <ToggleTheme></ToggleTheme>
               </div>
             </div>
-            <div className="select-list-wrapper">
+            <div className={theme ? "select-list-wrapper": "select-list-wrapper select-list-wrapper-drak"}>
               <SelectList buttons={btns}></SelectList>
             </div>
           </header>
