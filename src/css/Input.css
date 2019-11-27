@@ -18,3 +18,9 @@
   outline: none;
   border-color: #f45a8d;
 }
+
+.input-dark {
+  background-color: #282c35;
+  color: #eee;
+  border-color: #eee;
+}

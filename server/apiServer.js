@@ -1,6 +1,3 @@
-// import express from 'express'
-// import dbPromise from './openDB'
-// import { apiHost, apiPort } from './config'
 const express = require('express')
 const dbPromise = require('./openDB')
 const { apiHost, apiPort } = require('./config')

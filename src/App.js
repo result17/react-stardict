@@ -29,7 +29,9 @@ class App extends Component {
   }
 
   setToggleTheme = () => {
+    let theme = this.state.theme ? 'dark' : 'light'
     this.setState((state) => ({...state, theme: !state.theme}))
+    setLocalStorage('theme', theme)
   }
   
   // input的change的事件

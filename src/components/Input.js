@@ -5,10 +5,10 @@ class Input extends Component {
   render() {
     return (
       <Consumer>
-        {({searchWord, setInputSearchWord, setInputSearchWordData}) => (
+        {({searchWord, setInputSearchWord, setInputSearchWordData, theme}) => (
           <input 
             tyep="text"
-            className="input"
+            className={theme ? "input" : "input input-dark"}
             value={searchWord} 
             onChange={setInputSearchWord} 
             autoFocus={true}

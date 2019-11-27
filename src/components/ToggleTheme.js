@@ -1,5 +1,5 @@
 import React from 'react'
-import { Consumer } from '../App'
+import {Consumer} from '../App'
 import imgsData from '../data/base64Imgs'
 import '../css/ToggleTheme.css'
 
@@ -9,7 +9,7 @@ export default function ToggleTheme() {
     <Consumer>
       {({theme, setToggleTheme}) => (
         <section 
-          className={theme ? 'toggler' : 'toggler actived'} 
+          className={theme ? 'toggler' : 'toggler toggler-dark'} 
           onClick={setToggleTheme}
           ref={myToggler}
         >

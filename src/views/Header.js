@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Consumer} from '../App'
 import '../css/Header.css'
 import Input from '../components/Input'
 import SelectList from '../components/SelectList'
@@ -33,37 +34,41 @@ class Header extends Component {
   }
   render() {
     return (
-      <header className="header-wrapper">
-        <div className="logo-wrapper animated bounceInDown">
-          {/* 用css线性渐变 + 阴影 */}
-          <h2 className="pattern-overlay logo">
-            <span data-text="stardict"></span>
-            {/* animate */}
-            stardict
-          </h2>
-        </div>
-        <div className="study-time-wrapper">
-          {/* 分钟的字体适当增大更好 */}
-          <h4 className="study-time animated fadeIn">Learned: {this.state.studyTime} min
-            {
-            this.state.showS && 's'
-            }
-          </h4>
-        </div>
-        <div className="input-outer-wrapper">
-          <div className="input-inner-wrapper">
-            <Input></Input>
-          </div>
-        </div>
-        <div className="toggle-theme-wrapper">
-          <div className="toggle-theme">
-            <ToggleTheme></ToggleTheme>
-          </div>
-        </div>
-        <div className="select-list-wrapper">
-          <SelectList buttons={btns}></SelectList>
-        </div>
-      </header>
+      <Consumer>
+        {({theme}) => (
+          <header className={theme ? "header-wrapper" : "header-wrapper header-wrapper-drak"}>
+            <div className="logo-wrapper animated bounceInDown">
+              {/* 用css线性渐变 + 阴影 */}
+              <h2 className="pattern-overlay logo">
+                <span data-text="stardict"></span>
+                {/* animate */}
+                stardict
+              </h2>
+            </div>
+            <div className={theme ? "study-time-wrapper" : "study-time-wrapper study-time-wrapper-drak"}>
+              {/* 分钟的字体适当增大更好 */}
+              <h4 className={theme ? "study-time animated fadeIn" : "study-time study-time-dark animated fadeIn"}>Learned: {this.state.studyTime} min
+                {
+                this.state.showS && 's'
+                }
+              </h4>
+            </div>
+            <div className="input-outer-wrapper">
+              <div className="input-inner-wrapper">
+                <Input></Input>
+              </div>
+            </div>
+            <div className={theme ? "toggle-theme-wrapper" : "toggle-theme-wrapper toggle-theme-wrapper-dark"}>
+              <div className="toggle-theme">
+                <ToggleTheme></ToggleTheme>
+              </div>
+            </div>
+            <div className="select-list-wrapper">
+              <SelectList buttons={btns}></SelectList>
+            </div>
+          </header>
+        )}
+      </Consumer>
     )
   }
 }

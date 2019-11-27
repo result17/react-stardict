@@ -22,7 +22,6 @@
 }
 .toggler-thumb {
   position: absolute;
-  display: border-box;
   width: 22px;
   height: 22px;
   left: 1px;
@@ -32,7 +31,11 @@
   background-color: #fafafa;
   transition: all .5s cubic-bezier(.23, 1, .32, 1) 0ms;
 }
-.actived .toggler-thumb {
+.toggler-dark {
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 12px;
+}
+.toggler-dark .toggler-thumb {
   left: 27px;
   box-shadow: none;
 }
