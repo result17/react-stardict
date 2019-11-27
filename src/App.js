@@ -17,12 +17,12 @@ class App extends Component {
     searchWordData: {},
     details: [{
         context: 'Collections',
-        data: getLocalStorage('collection', 'apple,dog,physics').split(','),
+        data: getLocalStorage('collection').split(','),
         open: false,
       },
       {
         context: 'History',
-        data: getLocalStorage('history', 'computer,game,chemistry').split(','),
+        data: getLocalStorage('history').split(','),
         open: false,
       }
     ]
@@ -95,6 +95,21 @@ class App extends Component {
       console.error(err)
     }
   }
+
+  setStarStatus = (event) => {
+    let details = cloneDeep(this.state.details)
+    if (details[0].data.includes(this.state.searchWordData.word)) {
+      let newAry = details[0].data.filter(el => el !== this.state.searchWordData.word)
+      details[0].data = newAry
+    } else {
+      details[0].data.push(this.state.searchWordData.word)
+    }
+    this.setState({
+      ...this.state,
+      details: details,
+    })
+  }
+
   // 在utils中单独写一个过滤方法（在界面显示提示信息？）
   filterValue = (val) => val
   
@@ -122,6 +137,7 @@ class App extends Component {
           setAccordionSearchWord: this.setAccordionSearchWord,
           setAccordionSearchWordData: this.setAccordionSearchWordData,
           setAccordionOpen: this.setAccordionOpen,
+          setStarStatus: this.setStarStatus,
         }}
       >
         <Header></Header>

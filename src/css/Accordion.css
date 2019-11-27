@@ -24,7 +24,8 @@
   color: #ffa7c4;
 }
 .detail-menu-list {
-  height: 270px;
+  /* 窗口高度减去header高度减去两个summary的高度*/
+  height: calc((100vh - 60px - 82px) / 2);
   overflow-x: hidden;
   overflow-y: auto;
 }

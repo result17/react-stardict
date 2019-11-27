@@ -15,15 +15,24 @@
   border-left: none;
   background: #edf9ff;
 }
+
 .search-word {
+  display: inline-block;
   margin: 0;
-  width: 100%;
+  /* width: 200px; */
   height: 50px;
   line-height: 50px;
   font-size: 24px;
   font-weight: lighter;
   padding-left: 20px;
 }
+
+.star-wrapper {
+  margin-left: 20px;
+  width: 30px;
+  height: 30px;
+}
+
 .data-wrapper {
   position: absolute;
   top: 91px;
@@ -34,12 +43,14 @@
   border-bottom: 1px solid #333;
   border-top: 1px solid #333;
 }
+
 .phonetic {
   color: #3333CC;
   font-size: 20px;
   margin-top: 15px;
   margin-left: 50px;
 }
+
 .translation {
   font-size: 22px;
   color: #000;
@@ -47,6 +58,7 @@
   margin-top: 50px;
   margin-left: 50px;
 }
+
 .reason {
   color: red;
   font-size: 24px;
