@@ -50,7 +50,7 @@ class App extends Component {
   
   setInputSearchWordData = async(event) => {
     // 验证是否为敲回车事件
-    if (event.key !== 'Enter') return
+    if (event.key !== 'Enter' || event.target.value === '') return
     // 过滤无效值(纯函数)
     let value = this.filterValue(this.state.searchWord)
     if (value === undefined) return
@@ -62,7 +62,7 @@ class App extends Component {
       this.setState({
         ...this.state,
         searchWordData: resData.data,
-        details: newDetails,
+        [newDetails ? 'details' : '']: newDetails,
       })
     } catch {
       console.error('backend has error')
@@ -70,6 +70,7 @@ class App extends Component {
   }
  
   setDetailsAry = (tar, value) => {
+    if (value === undefined) return
     let details = cloneDeep(this.state.details)
     let target = details.find((detail) => detail.context === tar)
     let newAry = updataAry(target.data, value)

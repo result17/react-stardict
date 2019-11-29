@@ -18,6 +18,7 @@ class Accordion extends Component {
             <ul className="detail-menu-list">
               {detail.data &&
                 myReverse(detail.data).map((item) => {
+                  if (!item) return
                   return (
                     <li 
                       key={item}

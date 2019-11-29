@@ -8,12 +8,12 @@ const app = new express()
 app.get('/s', async(req, res, next) => {
   // 判断请求url来设置Access-Control-Allow-Origin
   if (!req.query.wd) {
+    res.set({
+      'Access-Control-Allow-Origin': '*'
+    })
     res.json({
       code: 2,
       reason: '输入参数无效',
-    })
-    res.set({
-      'Access-Control-Allow-Origin': '*'
     })
     next()
     return

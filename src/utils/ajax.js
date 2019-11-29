@@ -14,9 +14,7 @@ const req = {
     })
   },
   postData: (url, para) => {
-    return instance.post(url, {
-      params: qs.stringify(para)
-    })
+    return instance.post(url, qs.stringify(para))
   }
 }
 
