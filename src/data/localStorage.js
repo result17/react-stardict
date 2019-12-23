@@ -8,4 +8,7 @@ function getLocalStorage(item, defalutValue = '') {
 function setLocalStorage(item, value) {
   window.localStorage.setItem(item, value)
 }
-export {getLocalStorage, setLocalStorage}
+function clearAll() {
+  window.localStorage.clear()
+}
+export {getLocalStorage, setLocalStorage, clearAll}

@@ -5,7 +5,7 @@ import throttle from './utils/throttle'
 import cloneDeep from './utils/cloneDeep'
 import updataAry from './utils/updataAry'
 import {getWordData, setWordCache} from './data/cache'
-import {getLocalStorage, setLocalStorage} from './data/localStorage'
+import {getLocalStorage, setLocalStorage, clearAll} from './data/localStorage'
 import './css/App.css'
 
 export const { Provider, Consumer } = React.createContext()
@@ -71,6 +71,7 @@ class App extends Component {
  
   setDetailsAry = (tar, value) => {
     if (value === undefined) return
+    if (this.state.details.find((detail) => detail.context === tar).data.includes(value)) return
     let details = cloneDeep(this.state.details)
     let target = details.find((detail) => detail.context === tar)
     let newAry = updataAry(target.data, value)
@@ -89,11 +90,18 @@ class App extends Component {
       let resData = await getWordData(value)
       let newDetails = this.setDetailsAry('History', resData.data.word)
       setWordCache(event.target.innerText, resData.data)
-      this.setState({
-        ...this.state,
-        searchWordData: resData.data,
-        details: newDetails
-      })
+      if (newDetails) {
+        this.setState({
+          ...this.state,
+          searchWordData: resData.data,
+          details: newDetails,
+        })
+      } else {
+        this.setState({
+          ...this.state,
+          searchWordData: resData.data,
+        })
+      }
     } catch(err) {
       console.error(err)
     }
@@ -107,6 +115,10 @@ class App extends Component {
     } else {
       details[0].data.push(this.state.searchWordData.word)
     }
+    // 修改local stroge中的collections
+    clearAll()
+    setLocalStorage('collection', details[0].data.toString())
+
     this.setState({
       ...this.state,
       details: details,

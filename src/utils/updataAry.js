@@ -16,10 +16,10 @@ function updataAry(ary, val) {
     for (let i = idx + 1, len = ary.length; i < len; i++) {
       res.push(ary[i])
     }
-    return (res.push(val), res)
+    return (res.push(val), res.filter(it => it))
   } else {
     let res = ary.slice()
-    return (res.push(val), res)
+    return (res.push(val), res.filter(it => it))
   }
 }
 
